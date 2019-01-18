@@ -1,0 +1,236 @@
+:: REACT ::
+
+https://reactjs.org/
+https://github.com/LeonidasEsteban/platzi-video
+
+--A library for building user interfaces.
+
+-Declarativo
+-Basado en Componentes
+-Aprende una vez, escribe donde quieras
+
+Instalacion de dependencias
+1- npm install -g create-react-app
+2- create-react-app platzi-video
+3- npm start /yarn start (servidor local)
+4- npm install (for dev environment)
+5- npm install react react-dom --save
+6- Produccion-
+En este entorno:
+-Se corre el comando npm run build:prod
+-Se copia el nuevo Hash en el script
+-Se recarga el navegador para observar los cambios
+7- Desarrollo:
+En este entorno:
+-Se corre el comando npm run build:dev para drear un servidor local
+-Se ajusta la ruta del archivo index.html para visualizar los cambios
+8- Dependencia para Depurar Errores:
+-eval:'eval-source-map'
+
+Cursos Recomendados
+-Webpack (como realizar un Setup)
+
+Proyecto de React en Webpack
+https://github.com/LeonidasEsteban/webpack-curso/tree/master/invie
+
+Usando ReactDOM y JSX
+npm run build:dev
+Activando Modo 
+Desarrollo - Creando un servidor local
+Produccion - Cambiando el hash en cada una de las modificaciones al DOM
+Renderaizando cambios en el dom
+
+**Validando tipado en propiedades**
+https://reactjs.org/docs/typechecking-with-proptypes.html
+-npm install prop-types --save
+
+**Ciclo de Vida de Los Componentes**
+Fuente: https://rangle.github.io/react-training/react-summary/
+
+classMiComponenteextendsComponents{
+
+	constructor(){
+	// Enlazo (bind) eventos y/o inicializo estado
+	}
+	componentWillMount(){
+	// Se ejecuta antes de montar el componente
+	// Se podría usar para hacer un setState()
+	}
+	render(){
+	// Contiene todos los elementos a renderizar
+	// podrías usarlo para calcular propiedades (ej: concatenar una cadena)
+	}
+	componentDidMount(){
+	//Solo se lanza una vez
+	//Ideal para llamar a una API, hacer un setInteval, etc
+	}
+
+	//Actualización:
+	componentWillReceiveProps(){
+	//Es llamado cuando el componente recibe nuevas propiedades.
+
+	}
+	shouldComponentUpdate(){
+	//Idea para poner una condición y  si las propiedades que le llegaron anteriormente
+	// eran las mismas que tenia retornar false para evitar re-renderear el componente
+	}
+	componentWillUpdate(){
+	//metodo llamado antes de re-renderizar el componente si shouldComponentUpdate devolvió true
+	}
+
+	// re-render si es necesario...
+
+	componentDidUpdate(){
+	//Método llamado luego del re-render
+	}
+	componentWillUnmount(){
+	//Método llamado antes de desmontar el componente
+	}
+	componentDidCatch(){
+	// Si ocurre algún error, lo capturo desde acá:
+	}
+
+}
+
+Listas en ReactJS
+
+Los componentes tienen un ciclo de vida, el ciclo:
+
+-Montado
+
+-Actualización
+
+-Desmontado,
+
+-Manejo de errores (desde React 2016)
+
+
+**Componentes puros y funcionales en ReactJS**
+
+PureComponent: tiene el método shouldComponentUpdate ya asignado (por defecto), si a este componente no se le actualizan las propiedades, 
+no tenemos que validar a mano con shouldComponentUpdate, PureComponent lo hace por nosotros, es decir; si recibe nuevas propiedades pero son las que ya teniamos,
+no se re-renderiza.
+
+importReact, { PureComponent } from 'react';
+
+classPlaylistextendsPureComponent{
+  render() {
+    <Componente />
+    }
+}
+Componente Funcional: Es una función la cual solo retorna el JSX de nuestro componente (renderiza UI), es mas sencillo,
+mas fácil de probar y este componente no tiene ciclo de vida.
+
+import React from'react';
+
+functionPlaylist(props) {
+  return<Componentetitle={props.title} />
+}
+
+
+
+**Smart Components (Presentacional) / Dumb Components (Containers)**
+
+Presentacional Cómo se ve (Dumb Components):
+
+_Puede contener smart components u otros componentes de UI
+_Permiten composición con `[props.children]``
+_No depeden del resto de la aplicación
+_No especifica cómo los datos son cargados o mutados
+_Recibe datos y callbacks solo con propiedades
+_Rara vez tienen su propio estado
+_Están escritos como componentes funcionales a menos que necesiten mejoras de performance. Sólo pueden ser Componentes funcionales o Pure Components
+
+
+Containers Qué hace (Smart Components):
+
+_Concetrado en el funcionamiento de la aplicación
+_Contienen componentes de UI u otros containers
+_No tienen estilos
+_Proveen de datos a componentes de UI u otros contenedores
+_Proveen de callbacks a la UI
+_Normalmente tienen estado
+_Llaman acciones
+_Generados por high order components
+
+
+**Metodologia Como se ve VS Como funciona**
+
+-Separacion de Responsabilidades
+-Mejora la Capacidad de Reutilizar componentes
+
+En REACT Las propiedades (props) son inmutables, es decir; estas no pueden cambiar. En el caso que quisiéramos que algo cambie en nuestro componente,
+hay que manejarlo con el estado de nuestros componentes, el cual permite tener contenido dinámico.
+
+Para inicializar el estado tenemos que hacer uso de nuestro metodo constructor:
+
+constructor(props){
+    super(props);
+    this.state = {
+        author: props.author
+    }
+}
+Y en nuestros elementos vamos a utilizar state en lugar de props:
+
+<p className="Media-author">{this.state.author}</p>
+Para cambiar el estado tenemos un método especifico setState() al cual le pasamos los valores que queremos modificar en nuestro estado.
+
+handleClick = (event) => {
+    this.setState({
+        author: 'Emmanuel Alonso'
+    })
+}
+Con ES7 podemos hacer definir el estado directamente, en lugar de usar el constructor:
+
+state = {
+    author: 'Ivan Robles'
+}
+
+
+**structura del proyecto con Containers y UI components: layout de nuestro sitio web**
+
+  Platzi-Movies
+====
+home - entry point para Webpack
+
+ *Home - pagina / (container|Smart)
+ *Layout - UI
+ *Related - UI
+ *Categories - UI:
+ -Category - UI
+ -Playlist - UI
+ -Media - UI/Pure
+ *Search / (Container|Samrt):
+ -Search Layout UI
+ -Input UI
+ *Modal - (Container|Smart):
+ -Layout - UI
+ -VideoPlayer - (Container|Smart)
+ -Layout
+ -Video UI state
+ -Spinner - UI
+ -Controls - UI
+ -PlayPause - UI
+ -PlayIcon - UI
+ -PauseIcon - UI
+ -Timer - UI
+ -ProgressBar - UI
+ -Volume - UI
+ -VolumeIcon - UI
+ -FullScreen - UI
+ -FullScreenIcon - UI
+
+**Portales*
+
+Portales es la manera en la que podemos renderizar componentes fuera del contenedor principal de la aplicación.
+
+**Manejo de errores**
+-componentDidCatch (Validacion de Errores).
+
+**UI de Formularios**
+
+**Eventos de Media**
+https://reactjs.org/docs/events.html
+
+
+https://platzi.com/clases/1199-react/9575-agregando-logica-al-boton-de-play-y-pausa/
